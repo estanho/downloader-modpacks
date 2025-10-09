@@ -1,7 +1,18 @@
-# Tauri + React + Typescript
+# Downloader ModPacks Sn50
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+Esse programa facilita a instalação e configuração de modpacks.
 
-## Recommended IDE Setup
+## Ideia
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+O Downloader ModPacks Sn50 foi criado para facilitar a atualização de modpacks. Ele permite que os usuários consigam instalar/atualizar facilmente modpacks com apenas alguns cliques, além de ajudar os desenvolvedores a terem mais liberdade para atualizar com mais frequência e rapidez seus modpacks.
+
+## Funcionalidades
+
+- [X] Selecionar diretório do Minecraft
+- [X] Verificar a estrutura do Minecraft
+- [] Verificar a disponibilidade de atualizações
+- [] Instalar e atualizar modpack
+
+## Como usar
+
+...
