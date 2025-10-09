@@ -5,8 +5,12 @@ import App from "./App";
 
 import "@/styles/main.css";
 
+import { ThemeProvider } from "@/components/provider/theme-provider";
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );

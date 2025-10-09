@@ -12,9 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "Sn ModPacks",
-        "width": 600,
-        "height": 400,
+        "title": "Downloader Modpacks Sn50",
+        "width": 700,
+        "height": 500,
         "resizable": false,
         "maximizable": false
       }

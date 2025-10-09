@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    sn_modpacks_lib::run()
+    downloader_modpacks_sn50_lib::run()
 }
