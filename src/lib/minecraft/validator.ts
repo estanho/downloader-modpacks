@@ -1,3 +1,4 @@
+import { manifestSchema, type IManifest } from "@/types/manifest";
 import { join } from "@tauri-apps/api/path";
 import { exists, readTextFile } from "@tauri-apps/plugin-fs";
 
@@ -10,10 +11,10 @@ interface IMinecraftStructure {
   missingItems: string[];
 }
 
-interface IManifest {
+interface IManifestValidation {
   hasManifest: boolean;
-  manifestError: boolean;
-  manifestData?: any;
+  isValid: boolean;
+  manifestData?: IManifest;
 }
 
 export async function validateMinecraftStructure(
@@ -45,26 +46,53 @@ export async function validateMinecraftStructure(
   };
 }
 
-export async function validateManifest(path: string): Promise<IManifest> {
+export async function validateManifest(
+  path: string
+): Promise<IManifestValidation> {
   const manifestPath = await join(path, ".sn-manifest.json");
   const hasManifest = await exists(manifestPath);
 
-  let manifestData;
-  let manifestError = false;
-
-  if (hasManifest) {
-    try {
-      const manifestText = await readTextFile(manifestPath);
-      manifestData = JSON.parse(manifestText);
-    } catch (err) {
-      console.error("Erro ao ler manifesto:", err);
-      manifestError = true;
-    }
+  if (!hasManifest) {
+    return {
+      hasManifest: false,
+      isValid: false,
+    };
   }
 
-  return {
-    hasManifest,
-    manifestError,
-    manifestData,
-  };
+  try {
+    const manifestText = await readTextFile(manifestPath);
+
+    if (!manifestText || manifestText.trim() === "") {
+      return {
+        hasManifest: true,
+        isValid: false,
+      };
+    }
+
+    const rawData = JSON.parse(manifestText);
+    const result = manifestSchema.safeParse(rawData);
+
+    if (!result.success) {
+      return {
+        hasManifest: true,
+        isValid: false,
+      };
+    }
+
+    return {
+      hasManifest: true,
+      isValid: true,
+      manifestData: result.data,
+    };
+  } catch (err) {
+    console.error(
+      "Erro ao validar manifest:",
+      err instanceof Error ? err.message : "Erro desconhecido"
+    );
+
+    return {
+      hasManifest: true,
+      isValid: false,
+    };
+  }
 }

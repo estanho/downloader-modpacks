@@ -12,19 +12,21 @@ import {
   validateManifest,
   validateMinecraftStructure,
 } from "@/lib/minecraft/validator";
-import { CircleAlert, CircleCheck, CircleX } from "lucide-react";
-import { useEffect, useState } from "react"; // Adicionar useState e useEffect
+import type { IManifest } from "@/types/manifest";
+import { CircleCheck, CircleX } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface ValidationResult {
-  isValid: boolean;
-  foundItems: string[];
-  missingItems: string[];
-  hasManifest: boolean;
-  manifestData?: {
-    version: string;
-    lastUpdate: string;
+  dir: {
+    isValid: boolean;
+    foundItems: string[];
+    missingItems: string[];
   };
-  manifestError?: boolean;
+  manifest: {
+    hasManifest: boolean;
+    isValid: boolean;
+    manifestData?: IManifest;
+  };
 }
 
 function App() {
@@ -42,12 +44,16 @@ function App() {
     const manifest = await validateManifest(path);
 
     setValidation({
-      isValid: structure.isValid,
-      foundItems: structure.foundItems,
-      missingItems: structure.missingItems,
-      hasManifest: manifest.hasManifest,
-      manifestData: manifest.manifestData,
-      manifestError: manifest.manifestError,
+      dir: {
+        isValid: structure.isValid,
+        foundItems: structure.foundItems,
+        missingItems: structure.missingItems,
+      },
+      manifest: {
+        hasManifest: manifest.hasManifest,
+        isValid: manifest.isValid,
+        manifestData: manifest.manifestData,
+      },
     });
   }
 
@@ -86,72 +92,57 @@ function App() {
             <div className="space-y-4">
               <div
                 className={`rounded-lg border p-2 ${
-                  validation.isValid
+                  validation.dir.isValid
                     ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950"
                     : "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950"
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  {validation.isValid ? (
+                  {validation.dir.isValid ? (
                     <CircleCheck className="h-5 w-5 text-green-600 dark:text-green-400" />
                   ) : (
                     <CircleX className="h-5 w-5 text-red-600 dark:text-red-400" />
                   )}
                   <span
                     className={`font-semibold ${
-                      validation.isValid
+                      validation.dir.isValid
                         ? "text-green-800 dark:text-green-200"
                         : "text-red-800 dark:text-red-200"
                     }`}
                   >
-                    {validation.isValid
+                    {validation.dir.isValid
                       ? "Pasta do Minecraft válida!"
                       : "Pasta inválida do Minecraft"}
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <h3 className="text-sm font-semibold">Estrutura encontrada:</h3>
-                <div className="grid grid-cols-3 gap-2">
-                  {validation.foundItems.map((item) => (
-                    <div
-                      key={item}
-                      className="flex items-center gap-2 rounded bg-gray-50 p-2 text-sm dark:bg-gray-800"
-                    >
-                      <CircleCheck className="h-4 w-4 text-green-600 dark:text-green-400" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {validation.hasManifest && validation.manifestData && (
-                <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950">
-                  <div className="flex items-start gap-2">
-                    <CircleAlert className="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    <div>
-                      <p className="font-semibold text-blue-800 dark:text-blue-200">
-                        Configuração existente encontrada
-                      </p>
-                      <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-                        Versão instalada: {validation.manifestData.version}
-                      </p>
-                      <p className="text-sm text-blue-700 dark:text-blue-300">
-                        Última atualização: {validation.manifestData.lastUpdate}
-                      </p>
-                    </div>
+              {validation.dir.isValid && (
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold">
+                    Estrutura encontrada:
+                  </h3>
+                  <div className="grid grid-cols-3 gap-2">
+                    {validation.dir.foundItems.map((item) => (
+                      <div
+                        key={item}
+                        className="flex items-center gap-2 rounded bg-gray-50 p-2 text-sm dark:bg-gray-800"
+                      >
+                        <CircleCheck className="h-4 w-4 text-green-600 dark:text-green-400" />
+                        <span>{item}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
 
-              {validation.missingItems.length > 0 && (
+              {validation.dir.missingItems.length > 0 && (
                 <div className="space-y-2">
                   <h3 className="text-sm font-semibold text-red-600 dark:text-red-400">
                     Arquivos obrigatórios faltando:
                   </h3>
                   <div className="grid grid-cols-2 gap-2">
-                    {validation.missingItems.map((item) => (
+                    {validation.dir.missingItems.map((item) => (
                       <div
                         key={item}
                         className="flex items-center gap-2 rounded bg-red-50 p-2 text-sm dark:bg-red-900"
@@ -166,9 +157,9 @@ function App() {
                 </div>
               )}
 
-              {validation.isValid && (
+              {validation.dir.isValid && (
                 <Button className="mt-4 w-full">
-                  {validation.hasManifest
+                  {validation.manifest.isValid
                     ? "Verificar atualizações"
                     : "Instalar modpack"}
                 </Button>
