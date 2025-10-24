@@ -14,7 +14,7 @@ interface IMinecraftStructure {
 interface IManifestValidation {
   hasManifest: boolean;
   isValid: boolean;
-  manifestData?: IManifest;
+  manifestData: IManifest | null;
 }
 
 export async function validateMinecraftStructure(
@@ -56,6 +56,7 @@ export async function validateManifest(
     return {
       hasManifest: false,
       isValid: false,
+      manifestData: null,
     };
   }
 
@@ -66,6 +67,7 @@ export async function validateManifest(
       return {
         hasManifest: true,
         isValid: false,
+        manifestData: null,
       };
     }
 
@@ -76,6 +78,7 @@ export async function validateManifest(
       return {
         hasManifest: true,
         isValid: false,
+        manifestData: null,
       };
     }
 
@@ -93,6 +96,7 @@ export async function validateManifest(
     return {
       hasManifest: true,
       isValid: false,
+      manifestData: null,
     };
   }
 }
