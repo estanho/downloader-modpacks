@@ -3,8 +3,10 @@
 mod commands;
 use commands::config::{
     read_or_create_config,
-    add_or_update_modpack,
+    add_modpack,
+    update_modpack,
     remove_modpack,
+    get_modpack_by_id,
     get_modpack_by_path,
     list_modpacks
 };
@@ -13,8 +15,10 @@ pub fn run() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             read_or_create_config,
-            add_or_update_modpack,
+            add_modpack,
+            update_modpack,
             remove_modpack,
+            get_modpack_by_id,
             get_modpack_by_path,
             list_modpacks
         ])

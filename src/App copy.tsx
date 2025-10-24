@@ -7,7 +7,7 @@ import {
   FieldLegend,
   FieldSet,
 } from "@/components/ui/field";
-import { useSelectDir } from "@/hooks/selectDir";
+import { useSelectDir } from "@/hooks/use-select-dir";
 import {
   validateManifest,
   validateMinecraftStructure,
@@ -81,8 +81,7 @@ function App() {
                   : "Selecione o diretório"}
             </Button>
             <FieldDescription>
-              Você deve selecionar a pasta &quot;.minecraft&quot; ou a pasta que
-              você configurou no launcher.
+              Você deve selecionar a pasta onde o Minecraft está instalado.
             </FieldDescription>
           </Field>
         </FieldGroup>
