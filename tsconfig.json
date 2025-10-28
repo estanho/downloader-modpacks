@@ -10,4 +10,5 @@
       "@/*": ["./src/*"]
     }
   },
+  "exclude": ["**/route-tree.gen.ts"]
 }
