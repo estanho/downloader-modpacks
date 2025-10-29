@@ -21,7 +21,7 @@ function App() {
   const [option, setOption] = useState<string>("create");
 
   return (
-    <div className="space-y-8">
+    <>
       <FieldSet>
         <FieldGroup>
           <FieldLabel htmlFor="compute-environment-p8w">
@@ -78,9 +78,11 @@ function App() {
         </FieldGroup>
       </FieldSet>
 
-      <Button className="w-full cursor-default" asChild>
-        <Link to={option}>Próximo</Link>
-      </Button>
-    </div>
+      <div className="grid grid-cols-1">
+        <Button className="cursor-default" asChild>
+          <Link to={option}>Próximo</Link>
+        </Button>
+      </div>
+    </>
   );
 }

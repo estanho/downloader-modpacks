@@ -7,11 +7,11 @@ export const Route = createFileRoute("/_app")({
 
 function RouteComponent() {
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-6 p-6">
+    <div className="mx-auto flex h-svh max-w-2xl flex-col gap-6 p-6">
       <header>
         <div>
           <h1 className="mb-1 font-medium">
-            Bem Vindo(a) ao Downloader ModPacks Sn50
+            Bem Vindo(a) ao Downloader ModPacks Sn50 - [feito por Estanho]
           </h1>
           <p className="text-muted-foreground text-sm font-normal">
             Esse programa facilita a instalação e configuração correta de
@@ -22,7 +22,7 @@ function RouteComponent() {
 
       <Separator />
 
-      <main>
+      <main className="flex h-full flex-col justify-between">
         <Outlet />
       </main>
     </div>
