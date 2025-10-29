@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_app/")({
 });
 
 function App() {
-  const [value, setValue] = useState<string>("create");
+  const [option, setOption] = useState<string>("create");
 
   return (
     <div className="space-y-8">
@@ -29,8 +29,8 @@ function App() {
           </FieldLabel>
           <RadioGroup
             defaultValue="create"
-            value={value}
-            onValueChange={setValue}
+            value={option}
+            onValueChange={setOption}
           >
             <FieldLabel>
               <Field orientation="horizontal">
@@ -79,7 +79,7 @@ function App() {
       </FieldSet>
 
       <Button className="w-full cursor-default" asChild>
-        <Link to={value}>Próximo</Link>
+        <Link to={option}>Próximo</Link>
       </Button>
     </div>
   );

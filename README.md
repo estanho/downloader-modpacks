@@ -10,8 +10,9 @@ O Downloader ModPacks Sn50 foi criado para facilitar a atualização de modpacks
 
 - [X] Selecionar diretório do Minecraft
 - [X] Verificar a estrutura do Minecraft
-- [] Verificar a disponibilidade de atualizações
-- [] Instalar e atualizar modpack
+- [ ] Verificar a disponibilidade de atualizações
+- [ ] Instalar e atualizar modpack
+- [ ] Editar modpack
 
 ## Como usar
 

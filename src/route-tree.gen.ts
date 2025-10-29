@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './pages/__root'
 import { Route as AppRouteRouteImport } from './pages/_app/route'
 import { Route as AppIndexRouteImport } from './pages/_app/index'
+import { Route as AppUpdateIndexRouteImport } from './pages/_app/update/index'
+import { Route as AppEditIndexRouteImport } from './pages/_app/edit/index'
 import { Route as AppCreateIndexRouteImport } from './pages/_app/create/index'
 
 const AppRouteRoute = AppRouteRouteImport.update({
@@ -22,6 +24,16 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppUpdateIndexRoute = AppUpdateIndexRouteImport.update({
+  id: '/update/',
+  path: '/update/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppEditIndexRoute = AppEditIndexRouteImport.update({
+  id: '/edit/',
+  path: '/edit/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppCreateIndexRoute = AppCreateIndexRouteImport.update({
   id: '/create/',
   path: '/create/',
@@ -31,23 +43,35 @@ const AppCreateIndexRoute = AppCreateIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/create': typeof AppCreateIndexRoute
+  '/edit': typeof AppEditIndexRoute
+  '/update': typeof AppUpdateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/create': typeof AppCreateIndexRoute
+  '/edit': typeof AppEditIndexRoute
+  '/update': typeof AppUpdateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
   '/_app/': typeof AppIndexRoute
   '/_app/create/': typeof AppCreateIndexRoute
+  '/_app/edit/': typeof AppEditIndexRoute
+  '/_app/update/': typeof AppUpdateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/create'
+  fullPaths: '/' | '/create' | '/edit' | '/update'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/create'
-  id: '__root__' | '/_app' | '/_app/' | '/_app/create/'
+  to: '/' | '/create' | '/edit' | '/update'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/_app/'
+    | '/_app/create/'
+    | '/_app/edit/'
+    | '/_app/update/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -70,6 +94,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/update/': {
+      id: '/_app/update/'
+      path: '/update'
+      fullPath: '/update'
+      preLoaderRoute: typeof AppUpdateIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/edit/': {
+      id: '/_app/edit/'
+      path: '/edit'
+      fullPath: '/edit'
+      preLoaderRoute: typeof AppEditIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/create/': {
       id: '/_app/create/'
       path: '/create'
@@ -83,11 +121,15 @@ declare module '@tanstack/react-router' {
 interface AppRouteRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
   AppCreateIndexRoute: typeof AppCreateIndexRoute
+  AppEditIndexRoute: typeof AppEditIndexRoute
+  AppUpdateIndexRoute: typeof AppUpdateIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppIndexRoute: AppIndexRoute,
   AppCreateIndexRoute: AppCreateIndexRoute,
+  AppEditIndexRoute: AppEditIndexRoute,
+  AppUpdateIndexRoute: AppUpdateIndexRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
