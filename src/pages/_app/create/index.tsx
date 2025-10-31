@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldLegend,
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/_app/create/")({
 });
 
 export default function Create() {
-  const { config, error, errorMessage, isLoading } = useConfig();
+  const { config, error, isLoading } = useConfig();
   const { selectedDir, isSelecting, selectDir, openDir } = useSelectDir();
 
   const [url, setUrl] = useState<string>("");
@@ -46,20 +47,18 @@ export default function Create() {
         <FieldDescription>
           Adicione um novo modpack para o seu Minecraft.
         </FieldDescription>
+
         <FieldGroup>
-          <Field>
+          <Field data-invalid={error}>
             <FieldLabel>Endereço de download do modpack</FieldLabel>
             <Input
               placeholder="Digite o endereço de download do modpack"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               disabled={isLoading}
+              aria-invalid={error}
             />
-            {error && (
-              <FieldDescription className="text-red-600 dark:text-red-400">
-                {errorMessage}
-              </FieldDescription>
-            )}
+            <FieldError hidden={!error}>Erro</FieldError>
             <FieldDescription>
               Esse link deve ser disponibilizado pelo servidor que utiliza o
               modpack.
