@@ -9,31 +9,19 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { useConfig } from "@/hooks/use-config";
-import { useSelectDir } from "@/hooks/use-select-dir";
+import { useMinecraftDir } from "@/hooks/use-minecraft-dir";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/_app/create/")({
   component: Create,
 });
 
 export default function Create() {
-  const { config, error, isLoading } = useConfig();
-  const { selectedDir, isSelecting, selectDir, openDir } = useSelectDir();
+  const { openDialog, dir } = useMinecraftDir();
 
-  const [url, setUrl] = useState<string>("");
-  const [path, setPath] = useState<string>("");
-
-  useEffect(() => {
-    if (config && config.modpacks.length > 0) {
-      const modpack = config.modpacks[0];
-      setUrl(modpack.url);
-      setPath(modpack.last_path);
-      selectDir(modpack.last_path);
-    }
-  }, [config]);
+  const [url, setUrl] = useState("");
 
   return (
     <>
@@ -49,16 +37,13 @@ export default function Create() {
         </FieldDescription>
 
         <FieldGroup>
-          <Field data-invalid={error}>
+          <Field>
             <FieldLabel>Endereço de download do modpack</FieldLabel>
             <Input
-              placeholder="Digite o endereço de download do modpack"
+              placeholder="https://exemplo.com/..."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              disabled={isLoading}
-              aria-invalid={error}
             />
-            <FieldError hidden={!error}>Erro</FieldError>
             <FieldDescription>
               Esse link deve ser disponibilizado pelo servidor que utiliza o
               modpack.
@@ -67,32 +52,35 @@ export default function Create() {
         </FieldGroup>
 
         <FieldGroup>
-          <Field>
-            <FieldLabel>Selecione o diretório do Minecraft</FieldLabel>
+          <Field data-invalid={!dir.isValid}>
+            <FieldLabel>Diretório do Minecraft</FieldLabel>
+
             <Button
-              onClick={() => openDir(url, path)}
-              variant={selectedDir ? "secondary" : "outline"}
+              onClick={() => openDialog()}
+              variant={"outline"}
+              className={dir.isValid ? "text-green-400" : ""}
+              disabled={dir.isLoading}
+              aria-invalid={!dir.isValid}
             >
-              {isSelecting
-                ? "..."
-                : selectedDir
-                  ? selectedDir
-                  : "Selecione o diretório"}
+              {dir.isLoading
+                ? "Carregando..."
+                : dir.path || "Selecione o diretório"}
             </Button>
+
+            <FieldError hidden={dir.isValid ?? true}>{dir.error}</FieldError>
+
             <FieldDescription>
-              Você deve selecionar a pasta onde o Minecraft está instalado.
+              Selecione onde está instalado o seu Minecraft.
             </FieldDescription>
           </Field>
         </FieldGroup>
       </FieldSet>
 
       <div className="grid grid-cols-2 gap-2">
-        <Button className="cursor-default" variant={"outline"} asChild>
-          <Link to={"/"}>Voltar</Link>
+        <Button variant="outline" asChild>
+          <Link to="/">Voltar</Link>
         </Button>
-        <Button className="cursor-default" asChild>
-          <Link to={"/"}>Criar</Link>
-        </Button>
+        <Button disabled={!url || !dir.isValid}>Criar</Button>
       </div>
     </>
   );

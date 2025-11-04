@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useConfig } from "@/hooks/use-config";
-import { useSelectDir } from "@/hooks/use-select-dir";
+import { useSelectDir } from "@/hooks/use-minecraft-dir";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Pencil, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
